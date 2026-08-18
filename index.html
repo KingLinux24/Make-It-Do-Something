@@ -1,17 +1,8 @@
-<!-- ============================================================
-     REPLACE your existing <form class="scale-form" ...> block
-     with this one. Everything else on the page stays the same.
-     ============================================================ -->
-
 <form class="scale-form" id="contact-form">
-  <!-- Your free access key goes here — get it at https://web3forms.com -->
   <input type="hidden" name="access_key" value="b6ea4633-51b9-44c5-90c0-e4c2ef188778">
-
-  <!-- Optional: custom email subject line -->
   <input type="hidden" name="subject" value="New message from portfolio contact form">
 
   <div class="form-grid">
-    <!-- Row 1 -->
     <div class="form-group">
       <label class="form-label">YOUR NAME*</label>
       <input type="text" name="name" class="form-input" placeholder="ALEX REID" required />
@@ -20,8 +11,6 @@
       <label class="form-label">YOUR EMAIL*</label>
       <input type="email" name="email" class="form-input" placeholder="ALEX@COMPANY.COM" required />
     </div>
-
-    <!-- Row 2 -->
     <div class="form-group">
       <label class="form-label">PROJECT TYPE / DOMAIN</label>
       <input type="text" name="project_type" class="form-input" placeholder="AI Security / SOC Automation / Cloud" />
@@ -30,8 +19,6 @@
       <label class="form-label">TIMELINE / OPPORTUNITY</label>
       <input type="text" name="timeline" class="form-input" placeholder="Immediate / Next Quarter" />
     </div>
-
-    <!-- Row 3 -->
     <div class="form-group" style="grid-column: 1 / -1;">
       <label class="form-label">PROJECT DETAILS & SECURITY GOALS</label>
       <input type="text" name="message" class="form-input" placeholder="Tell me about your systems, SIEM stack, or AI security needs..." required />
@@ -50,7 +37,6 @@
     </button>
   </div>
 
-  <!-- Real status feedback — this is what "genuinely works" looks like -->
   <p id="form-status" style="margin-top:14px; font-size:0.9rem;"></p>
 </form>
 
@@ -61,8 +47,7 @@
   const submitText = document.getElementById("submit-text");
 
   form.addEventListener("submit", async function (e) {
-    e.preventDefault(); // prevent page reload — but UNLIKE before, we now actually send the data below
-
+    e.preventDefault();
     submitBtn.disabled = true;
     submitText.textContent = "Sending...";
     statusEl.textContent = "";
