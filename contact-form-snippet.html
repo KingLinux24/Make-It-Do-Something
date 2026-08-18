@@ -1,0 +1,98 @@
+<!-- ============================================================
+     REPLACE your existing <form class="scale-form" ...> block
+     with this one. Everything else on the page stays the same.
+     ============================================================ -->
+
+<form class="scale-form" id="contact-form">
+  <!-- Your free access key goes here — get it at https://web3forms.com -->
+  <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+
+  <!-- Optional: custom email subject line -->
+  <input type="hidden" name="subject" value="New message from portfolio contact form">
+
+  <div class="form-grid">
+    <!-- Row 1 -->
+    <div class="form-group">
+      <label class="form-label">YOUR NAME*</label>
+      <input type="text" name="name" class="form-input" placeholder="ALEX REID" required />
+    </div>
+    <div class="form-group">
+      <label class="form-label">YOUR EMAIL*</label>
+      <input type="email" name="email" class="form-input" placeholder="ALEX@COMPANY.COM" required />
+    </div>
+
+    <!-- Row 2 -->
+    <div class="form-group">
+      <label class="form-label">PROJECT TYPE / DOMAIN</label>
+      <input type="text" name="project_type" class="form-input" placeholder="AI Security / SOC Automation / Cloud" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">TIMELINE / OPPORTUNITY</label>
+      <input type="text" name="timeline" class="form-input" placeholder="Immediate / Next Quarter" />
+    </div>
+
+    <!-- Row 3 -->
+    <div class="form-group" style="grid-column: 1 / -1;">
+      <label class="form-label">PROJECT DETAILS & SECURITY GOALS</label>
+      <input type="text" name="message" class="form-input" placeholder="Tell me about your systems, SIEM stack, or AI security needs..." required />
+    </div>
+  </div>
+
+  <div class="form-submit-row">
+    <button type="submit" class="btn-primary btn-submit" id="submit-btn">
+      <span id="submit-text">Send Message</span>
+      <div class="btn-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </div>
+    </button>
+  </div>
+
+  <!-- Real status feedback — this is what "genuinely works" looks like -->
+  <p id="form-status" style="margin-top:14px; font-size:0.9rem;"></p>
+</form>
+
+<script>
+  const form = document.getElementById("contact-form");
+  const statusEl = document.getElementById("form-status");
+  const submitBtn = document.getElementById("submit-btn");
+  const submitText = document.getElementById("submit-text");
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault(); // prevent page reload — but UNLIKE before, we now actually send the data below
+
+    submitBtn.disabled = true;
+    submitText.textContent = "Sending...";
+    statusEl.textContent = "";
+
+    const formData = new FormData(form);
+    const payload = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        statusEl.textContent = "Message sent — I'll get back to you soon.";
+        statusEl.style.color = "#2E9E8B";
+        form.reset();
+      } else {
+        statusEl.textContent = "Something went wrong: " + (result.message || "please try again.");
+        statusEl.style.color = "#e63946";
+      }
+    } catch (err) {
+      statusEl.textContent = "Network error — please try again in a moment.";
+      statusEl.style.color = "#e63946";
+    } finally {
+      submitBtn.disabled = false;
+      submitText.textContent = "Send Message";
+    }
+  });
+</script>
